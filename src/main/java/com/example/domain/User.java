@@ -6,8 +6,10 @@ import lombok.*;
 import java.util.Set;
 
 @Entity
+@Table(name = "users")
 @Getter
 @Setter
+@ToString
 @NoArgsConstructor
 @RequiredArgsConstructor
 public class User {
