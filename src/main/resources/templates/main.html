@@ -9,13 +9,17 @@
 </head>
 <body>
 
-
-<form method="post" action="/main">
+<div>
+    <form th:action="@{/logout}" method="post">
+        <input type="submit" value="Sign Out"/>
+    </form>
+</div>
+<form method="post" th:action="@{/main}">
     <input type="text" name="text" placeholder="Enter your message"/>
     <input type="text" name="tag" placeholder="Tag"/>
     <button type="submit">Add message</button>
 </form>
-<form method="post" action="/filter">
+<form method="post" th:action="@{/filter}">
     <input type="text" name="filter">
     <button type="submit">Find message</button>
 </form>
