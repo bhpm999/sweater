@@ -1,16 +1,12 @@
 package com.example.domain;
 
-import com.example.repos.MessageRepo;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.stereotype.Component;
 
-import java.util.Optional;
 
 @Component
 @Entity
@@ -23,10 +19,17 @@ public class Message{
     private Integer id;
     private String text;
     private String tag;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id")
+    private User author;
 
-    public Message(String text, String tag) {
+    public Message(String text, String tag, User author) {
+        this.author = author;
         this.text = text;
         this.tag = tag;
+    }
+    public String getAuthorName(){
+        return author != null ? author.getUsername() : "<none>";
     }
 
 }
