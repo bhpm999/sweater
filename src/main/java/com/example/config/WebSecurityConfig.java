@@ -1,5 +1,6 @@
 package com.example.config;
 
+import com.example.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -9,14 +10,12 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
-import javax.sql.DataSource;
 
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig {
-
     @Autowired
-    DataSource dataSource;
+    UserService userService;
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
@@ -34,10 +33,7 @@ public class WebSecurityConfig {
     }
     @Autowired
     public void initialize(AuthenticationManagerBuilder builder) throws  Exception{
-        builder.jdbcAuthentication()
-                .dataSource(dataSource)
-                .passwordEncoder(new BCryptPasswordEncoder())
-                .usersByUsernameQuery("select username, password, active from users where username = ?")
-                .authoritiesByUsernameQuery("select u.username, ur.roles from users u join user_role ur on u.id = ur.user_id where u.username = ? ");
+        builder.userDetailsService(userService)
+                .passwordEncoder(new BCryptPasswordEncoder());
     }
 }
